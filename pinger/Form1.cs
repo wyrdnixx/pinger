@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,27 @@ namespace pinger
         private void btn_add_Click(object sender, EventArgs e)
         {
 
+            string myIpString = tb_ip.Text;
+            System.Net.IPAddress ipAddress = null;
+            bool isValidIp = System.Net.IPAddress.TryParse(myIpString, out ipAddress);
 
+            if (!isValidIp)
+            {
+                MessageBox.Show("No valid IP Adress");
+            } else
+            {
+                addChart(tb_ip.Text);
+             
+            }
+         
+        }
+        private void bntAddGw_Click(object sender, EventArgs e)
+        {
+            addChart(GetDefaultGateway().ToString());
+        }
 
+        void addChart (String address)
+        {
             var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
             {
                 Name = "Series1",
@@ -46,41 +66,31 @@ namespace pinger
 
             };
 
-            Chart chart = new Chart();            
-            
-
-            chart.Name = tb_ip.Text;
-
-            
-
-
+            Chart chart = new Chart();
+            chart.Name = address;
 
             ChartArea ChartArea1 = new ChartArea();
             chart.ChartAreas.Add("ChartArea1");
             //chart.ChartAreas[0].Area3DStyle.Enable3D = true;
 
             series1.Name = "eins";
-            
+
             chart.Series.Add(series1);
 
             Label lbl = new Label();
-            lbl.Name = tb_ip.Text;
-            lbl.Text= lbl.Name;
+            lbl.Name = address;
+            lbl.Text = address;
             //lbl.Location = new
             lbl.Dock = DockStyle.Bottom;
             panel1.Controls.Add(lbl);
 
-            //chart.Series[0].Points.Add(3);
-            //chart.Series[0].Points.Add(4);
-            //panel1.Controls[tb_ip.Text].Location = new Point(10, 0);
-
             chart.Dock = DockStyle.Bottom;
             chart.Height = 100;
             chart.Width = (panel1.Width - 10);
-            panel1.Controls.Add(chart);            
-
-
+            panel1.Controls.Add(chart);
         }
+
+
         void timer_Tick(object sender, EventArgs e)
         {
             //testping(tb_ip.Text);
@@ -109,26 +119,6 @@ namespace pinger
                 
 
 
-
-                //Color col = new Color();
-                //col = Color.Green;
-
-                //if (pingreply.RoundtripTime < 20)
-                //{
-                //    col = Color.Green;
-                //} else if (pingreply.RoundtripTime >= 20 && pingreply.RoundtripTime <= 35)
-                //{
-                //    col = Color.Yellow;
-                //} else if(pingreply.RoundtripTime > 35)
-                //{
-                //    col = Color.IndianRed;
-                //} 
-                //chart.Series[0].Points.Add(pingreply.RoundtripTime).Color = col;
-
-                
-
-
-                
 
             }
 
@@ -221,5 +211,23 @@ namespace pinger
                 }
             }
         }
+
+        public static IPAddress GetDefaultGateway()
+        {
+            return NetworkInterface
+                .GetAllNetworkInterfaces()
+                .Where(n => n.OperationalStatus == OperationalStatus.Up)
+                .Where(n => n.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .SelectMany(n => n.GetIPProperties()?.GatewayAddresses)
+                .Select(g => g?.Address)
+                .Where(a => a != null)
+                // .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
+                // .Where(a => Array.FindIndex(a.GetAddressBytes(), b => b != 0) >= 0)
+                .FirstOrDefault();
+        }
+
+  
     }
+
+   
 }

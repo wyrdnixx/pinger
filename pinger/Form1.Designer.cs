@@ -33,6 +33,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnstartstop = new System.Windows.Forms.Button();
             this.cb3d = new System.Windows.Forms.CheckBox();
+            this.bntAddGw = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_add
@@ -83,12 +84,23 @@
             this.cb3d.UseVisualStyleBackColor = true;
             this.cb3d.CheckedChanged += new System.EventHandler(this.cb3d_CheckedChanged);
             // 
+            // bntAddGw
+            // 
+            this.bntAddGw.Location = new System.Drawing.Point(237, 12);
+            this.bntAddGw.Name = "bntAddGw";
+            this.bntAddGw.Size = new System.Drawing.Size(82, 23);
+            this.bntAddGw.TabIndex = 6;
+            this.bntAddGw.Text = "Add Def. GW";
+            this.bntAddGw.UseVisualStyleBackColor = true;
+            this.bntAddGw.Click += new System.EventHandler(this.bntAddGw_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(925, 858);
+            this.Controls.Add(this.bntAddGw);
             this.Controls.Add(this.cb3d);
             this.Controls.Add(this.btnstartstop);
             this.Controls.Add(this.panel1);
@@ -108,6 +120,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnstartstop;
         private System.Windows.Forms.CheckBox cb3d;
+        private System.Windows.Forms.Button bntAddGw;
     }
 }
 
