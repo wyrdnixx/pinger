@@ -32,19 +32,23 @@ namespace pinger
            
         private void btn_add_Click(object sender, EventArgs e)
         {
-            
+
 
 
             var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
             {
-                Name = "Series1",                
+                Name = "Series1",
                 Color = System.Drawing.Color.Green,
                 IsVisibleInLegend = false,
                 IsXValueIndexed = false,
                 //ChartType = SeriesChartType.Line
+                ChartType = SeriesChartType.SplineArea
+
             };
 
             Chart chart = new Chart();            
+            
+
             chart.Name = tb_ip.Text;
 
             
@@ -53,6 +57,8 @@ namespace pinger
 
             ChartArea ChartArea1 = new ChartArea();
             chart.ChartAreas.Add("ChartArea1");
+            //chart.ChartAreas[0].Area3DStyle.Enable3D = true;
+
             series1.Name = "eins";
             
             chart.Series.Add(series1);
@@ -154,7 +160,7 @@ namespace pinger
                     if (e.Reply.Status != IPStatus.Success)
                     {
                         //tbresults.Text += Environment.NewLine + e.Reply.Address.ToString() + " : "+  e.Reply.Status.ToString();
-                        chart.Series[0].Points.Add(50).Color = Color.Red;
+                        chart.Series[0].Points.Add(80).Color = Color.Red;
                         
                     }
                     else
@@ -197,6 +203,23 @@ namespace pinger
 
         }
 
+        private void cb3d_CheckedChanged(object sender, EventArgs e)
+        {
+            if( cb3d.Checked)
+            {
 
+                foreach (Chart chart in panel1.Controls.OfType<Chart>())
+                {
+                    chart.ChartAreas[0].Area3DStyle.Enable3D = true;
+                }
+            }
+            else
+            {
+                foreach (Chart chart in panel1.Controls.OfType<Chart>())
+                {
+                    chart.ChartAreas[0].Area3DStyle.Enable3D = false;
+                }
+            }
+        }
     }
 }
