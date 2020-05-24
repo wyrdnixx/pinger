@@ -172,7 +172,7 @@ namespace pinger
                         }
                         else if (e.Reply.RoundtripTime > 35)
                         {
-                            col = Color.IndianRed;
+                            col = Color.BlueViolet;
                         }
                         chart.Series[0].Points.Add(e.Reply.RoundtripTime).Color = col;
                     }                
