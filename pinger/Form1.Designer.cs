@@ -37,13 +37,16 @@
             this.btnadd1111 = new System.Windows.Forms.Button();
             this.btnadd8888 = new System.Windows.Forms.Button();
             this.btnadd4444 = new System.Windows.Forms.Button();
+            this.lblInfoText = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_add
             // 
-            this.btn_add.Location = new System.Drawing.Point(156, 23);
+            this.btn_add.Location = new System.Drawing.Point(156, 10);
             this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(75, 23);
+            this.btn_add.Size = new System.Drawing.Size(138, 23);
             this.btn_add.TabIndex = 1;
             this.btn_add.Text = "Add";
             this.btn_add.UseVisualStyleBackColor = true;
@@ -81,7 +84,7 @@
             // cb3d
             // 
             this.cb3d.AutoSize = true;
-            this.cb3d.Location = new System.Drawing.Point(490, 31);
+            this.cb3d.Location = new System.Drawing.Point(3, 58);
             this.cb3d.Name = "cb3d";
             this.cb3d.Size = new System.Drawing.Size(40, 17);
             this.cb3d.TabIndex = 5;
@@ -91,7 +94,7 @@
             // 
             // bntAddGw
             // 
-            this.bntAddGw.Location = new System.Drawing.Point(237, -2);
+            this.bntAddGw.Location = new System.Drawing.Point(3, 2);
             this.bntAddGw.Name = "bntAddGw";
             this.bntAddGw.Size = new System.Drawing.Size(82, 23);
             this.bntAddGw.TabIndex = 6;
@@ -101,7 +104,7 @@
             // 
             // btnadd1111
             // 
-            this.btnadd1111.Location = new System.Drawing.Point(325, -2);
+            this.btnadd1111.Location = new System.Drawing.Point(3, 31);
             this.btnadd1111.Name = "btnadd1111";
             this.btnadd1111.Size = new System.Drawing.Size(82, 23);
             this.btnadd1111.TabIndex = 7;
@@ -111,7 +114,7 @@
             // 
             // btnadd8888
             // 
-            this.btnadd8888.Location = new System.Drawing.Point(325, 27);
+            this.btnadd8888.Location = new System.Drawing.Point(91, 3);
             this.btnadd8888.Name = "btnadd8888";
             this.btnadd8888.Size = new System.Drawing.Size(82, 23);
             this.btnadd8888.TabIndex = 8;
@@ -121,13 +124,39 @@
             // 
             // btnadd4444
             // 
-            this.btnadd4444.Location = new System.Drawing.Point(325, 56);
+            this.btnadd4444.Location = new System.Drawing.Point(91, 31);
             this.btnadd4444.Name = "btnadd4444";
             this.btnadd4444.Size = new System.Drawing.Size(82, 23);
             this.btnadd4444.TabIndex = 9;
             this.btnadd4444.Text = "Add 4.4.4.4";
             this.btnadd4444.UseVisualStyleBackColor = true;
             this.btnadd4444.Click += new System.EventHandler(this.btnadd4444_Click);
+            // 
+            // lblInfoText
+            // 
+            this.lblInfoText.AutoSize = true;
+            this.lblInfoText.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.lblInfoText.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblInfoText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfoText.Location = new System.Drawing.Point(833, 0);
+            this.lblInfoText.MaximumSize = new System.Drawing.Size(0, 80);
+            this.lblInfoText.Name = "lblInfoText";
+            this.lblInfoText.Size = new System.Drawing.Size(92, 13);
+            this.lblInfoText.TabIndex = 10;
+            this.lblInfoText.Text = "App was started...";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel2.Controls.Add(this.btnadd4444);
+            this.panel2.Controls.Add(this.btnadd8888);
+            this.panel2.Controls.Add(this.cb3d);
+            this.panel2.Controls.Add(this.btnadd1111);
+            this.panel2.Controls.Add(this.bntAddGw);
+            this.panel2.Location = new System.Drawing.Point(314, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(181, 75);
+            this.panel2.TabIndex = 11;
             // 
             // Form1
             // 
@@ -136,11 +165,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(925, 858);
-            this.Controls.Add(this.btnadd4444);
-            this.Controls.Add(this.btnadd8888);
-            this.Controls.Add(this.btnadd1111);
-            this.Controls.Add(this.bntAddGw);
-            this.Controls.Add(this.cb3d);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.lblInfoText);
             this.Controls.Add(this.btnstartstop);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tb_ip);
@@ -149,6 +175,8 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Pinger";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,6 +192,8 @@
         private System.Windows.Forms.Button btnadd1111;
         private System.Windows.Forms.Button btnadd8888;
         private System.Windows.Forms.Button btnadd4444;
+        private System.Windows.Forms.Label lblInfoText;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 

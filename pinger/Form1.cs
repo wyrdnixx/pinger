@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -35,13 +36,16 @@ namespace pinger
            
         private void btn_add_Click(object sender, EventArgs e)
         {
-
+           
             string[] lines = tb_ip.Lines;
-
             for (int i = 0; i <= lines.GetUpperBound(0); i++)
             {
              //   MessageBox.Show(lines[i]);
-                addPinger(lines[i]);
+             if(lines[i] != "")
+                {
+                    addPinger(lines[i]);
+                }
+                
             }                    
         }
      
@@ -75,7 +79,8 @@ namespace pinger
 
                 if (!isValidIp)
                 {
-                    MessageBox.Show("->" + myIpString + "<- No valid IP Adress");
+                    lblInfoText.Text = "->" + myIpString + "<- No valid IP Adress" + Environment.NewLine + lblInfoText.Text;
+                    //MessageBox.Show("->" + myIpString + "<- No valid IP Adress");
                 }
                 else
                 {
