@@ -29,31 +29,62 @@ namespace pinger
                  ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                     | System.Windows.Forms.AnchorStyles.Left)
                     | System.Windows.Forms.AnchorStyles.Right)));
+
+            cb3d.Checked = true;
         }
            
         private void btn_add_Click(object sender, EventArgs e)
         {
-
-            string myIpString = tb_ip.Text;
-            System.Net.IPAddress ipAddress = null;
-            bool isValidIp = System.Net.IPAddress.TryParse(myIpString, out ipAddress);
-
-            if (!isValidIp)
-            {
-                MessageBox.Show("No valid IP Adress");
-            } else
-            {
-                addChart(tb_ip.Text);
+                       
+                addPinger(tb_ip.Text);
              
-            }
-         
+                    
         }
-        private void bntAddGw_Click(object sender, EventArgs e)
+     
+        private void tb_ip_KeyDown(object sender, KeyEventArgs e)
         {
-            addChart(GetDefaultGateway().ToString());
+         
+           if (e.KeyCode == Keys.Enter)
+            {
+                
+                addPinger(tb_ip.Text);
+            }
+            
+        }
+      
+
+        void addPinger(String address)
+        {
+
+            // check if pinger already exists
+            Boolean allreadyExists = false;
+            foreach (Chart chart in panel1.Controls.OfType<Chart>())
+            {
+                if (chart.Name == address) allreadyExists = true;
+            }
+
+            if (!allreadyExists)
+            {
+                string myIpString = tb_ip.Text;
+                System.Net.IPAddress ipAddress = null;
+                bool isValidIp = System.Net.IPAddress.TryParse(myIpString, out ipAddress);
+
+                if (!isValidIp)
+                {
+                    MessageBox.Show("No valid IP Adress");
+                }
+                else
+                {
+                    addChart(address);
+                    if (!timer.Enabled) startstopTimer();
+                    check3dstate();
+                }
+            }
+            
+
         }
 
-        void addChart (String address)
+        private void addChart(String address)
         {
             var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
             {
@@ -76,22 +107,51 @@ namespace pinger
             series1.Name = "eins";
 
             chart.Series.Add(series1);
-
+            
             Label lbl = new Label();
             lbl.Name = address;
-            lbl.Text = address;
-            //lbl.Location = new
+            lbl.Text = address;            
             lbl.Dock = DockStyle.Bottom;
+            lbl.AutoSize = true;
+            lbl.Click += new EventHandler(lbl_Click);// error here
             panel1.Controls.Add(lbl);
+
+
 
             chart.Dock = DockStyle.Bottom;
             chart.Height = 100;
             chart.Width = (panel1.Width - 10);
             panel1.Controls.Add(chart);
+
+            
         }
+        protected void lbl_Click(object sender, EventArgs e)
+        {
+            //string Name = ((System.Windows.Forms.Label)sender).Name;
+           // MessageBox.Show(((System.Windows.Forms.Label)sender).Name);
 
 
-        void timer_Tick(object sender, EventArgs e)
+            foreach (Chart chart in panel1.Controls.OfType<Chart>())
+            {
+                if(chart.Name == ((System.Windows.Forms.Label)sender).Name)
+                {
+                    panel1.Controls.Remove(chart);
+                    chart.Dispose();
+                }
+            }
+
+
+            foreach (Label lbl in panel1.Controls.OfType<Label>())
+            {
+                if (lbl.Name == ((System.Windows.Forms.Label)sender).Name)
+                {
+                    panel1.Controls.Remove(lbl);
+                    lbl.Dispose();
+                }
+            }
+
+            }
+        private void timer_Tick(object sender, EventArgs e)
         {
             //testping(tb_ip.Text);
 
@@ -108,17 +168,15 @@ namespace pinger
                 Ping pingSender = new Ping();
                 //pingSender.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
 
-                pingSender.PingCompleted += (sender2, e2) => PingCompletedCallback(sender2, e2, chart);
+                pingSender.PingCompleted += (sender2, e2) => PingCompletedCallback(sender2, e2, chart,chart.Name);
 
 
                 int timeout = 2000;
                 string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
                 byte[] buffer = Encoding.ASCII.GetBytes(data);
                 PingOptions options = new PingOptions(64, true);
-                pingSender.SendAsync(chart.Name, timeout, buffer, options);
-                
 
-
+                pingSender.SendAsync(chart.Name, timeout, buffer, options);               
 
             }
 
@@ -126,24 +184,17 @@ namespace pinger
         }
 
 
-        private void PingCompletedCallback(object sender, PingCompletedEventArgs e, Chart chart)
+        private void PingCompletedCallback(object sender, PingCompletedEventArgs e,Chart chart,  String chartname)
         {
 
-            //Mespanel1.Controls.OfType<Chart>()sageBox.Show(e.Reply.Address.ToString());
-            //MessageBox.Show(e.Reply.Status.ToString());
-
-            //if (e.Reply.Status != IPStatus.Success) { 
-            //   tbresults.Text += Environment.NewLine + e.Reply.Status.ToString();
-            //}
-
+        try
+            { 
 
             foreach (Label lbl in panel1.Controls.OfType<Label>())
             {
-                              
-
-                if (lbl.Name == chart.Name)
+                if (lbl.Name == chartname)
                 {
-                    lbl.Text = chart.Name + " -> " + e.Reply.Address.ToString() + " : " + e.Reply.Status.ToString();
+                    lbl.Text = " (X)   " + chartname + " -> " + e.Reply.Address.ToString() + " : " + e.Reply.Status.ToString() + " @ " + e.Reply.RoundtripTime;
                 }
             }
             
@@ -171,8 +222,12 @@ namespace pinger
                             col = Color.BlueViolet;
                         }
                         chart.Series[0].Points.Add(e.Reply.RoundtripTime).Color = col;
-                    }                
-            
+                    }
+            }catch (NullReferenceException)
+            {
+                // in case the pinger was deleted while async task was running and this is the callback
+                // Nothing
+            }
         }
 
 
@@ -180,22 +235,34 @@ namespace pinger
 
         private void btnstartstop_Click(object sender, EventArgs e)
         {
+            startstopTimer();
+        }
+
+        private void startstopTimer()
+        {
+            
             if (timer.Enabled)
             {
                 btnstartstop.Text = "start";
                 timer.Stop();
 
-            } else
+            }
+            else
             {
                 btnstartstop.Text = "stop";
                 timer.Start();
             }
-
         }
 
         private void cb3d_CheckedChanged(object sender, EventArgs e)
         {
-            if( cb3d.Checked)
+            check3dstate();
+        }
+
+
+        private void check3dstate()
+        {
+            if (cb3d.Checked)
             {
 
                 foreach (Chart chart in panel1.Controls.OfType<Chart>())
@@ -211,7 +278,6 @@ namespace pinger
                 }
             }
         }
-
         public static IPAddress GetDefaultGateway()
         {
             return NetworkInterface
@@ -226,7 +292,38 @@ namespace pinger
                 .FirstOrDefault();
         }
 
-  
+        //private void tb_ip_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    // supress "bing"-sound on Enter-Key Pressed
+        //    e.Handled = true;
+        //    tb_ip.Text = tb_ip.Text + e.KeyChar;
+        //}
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // stop the Timer befor exit (prevent unclean shutdown and exception
+            timer.Stop();
+        }
+
+        private void bntAddGw_Click(object sender, EventArgs e)
+        {
+            addPinger(GetDefaultGateway().ToString());
+        }
+
+        private void btnadd1111_Click(object sender, EventArgs e)
+        {
+            addPinger("1.1.1.1");
+        }
+
+        private void btnadd8888_Click(object sender, EventArgs e)
+        {
+            addPinger("8.8.8.8");
+        }
+
+        private void btnadd4444_Click(object sender, EventArgs e)
+        {
+            addPinger("4.4.4.4");
+        }
     }
 
    
