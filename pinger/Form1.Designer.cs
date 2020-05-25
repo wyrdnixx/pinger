@@ -41,7 +41,7 @@
             // 
             // btn_add
             // 
-            this.btn_add.Location = new System.Drawing.Point(156, 12);
+            this.btn_add.Location = new System.Drawing.Point(156, 23);
             this.btn_add.Name = "btn_add";
             this.btn_add.Size = new System.Drawing.Size(75, 23);
             this.btn_add.TabIndex = 1;
@@ -52,8 +52,9 @@
             // tb_ip
             // 
             this.tb_ip.Location = new System.Drawing.Point(12, 12);
+            this.tb_ip.Multiline = true;
             this.tb_ip.Name = "tb_ip";
-            this.tb_ip.Size = new System.Drawing.Size(138, 20);
+            this.tb_ip.Size = new System.Drawing.Size(138, 63);
             this.tb_ip.TabIndex = 2;
             this.tb_ip.Text = "1.1.1.1";
             this.tb_ip.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ip_KeyDown);
@@ -69,7 +70,7 @@
             // 
             // btnstartstop
             // 
-            this.btnstartstop.Location = new System.Drawing.Point(12, 52);
+            this.btnstartstop.Location = new System.Drawing.Point(156, 52);
             this.btnstartstop.Name = "btnstartstop";
             this.btnstartstop.Size = new System.Drawing.Size(138, 23);
             this.btnstartstop.TabIndex = 4;
@@ -80,7 +81,7 @@
             // cb3d
             // 
             this.cb3d.AutoSize = true;
-            this.cb3d.Location = new System.Drawing.Point(167, 56);
+            this.cb3d.Location = new System.Drawing.Point(490, 31);
             this.cb3d.Name = "cb3d";
             this.cb3d.Size = new System.Drawing.Size(40, 17);
             this.cb3d.TabIndex = 5;

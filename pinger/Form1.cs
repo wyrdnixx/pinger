@@ -35,10 +35,14 @@ namespace pinger
            
         private void btn_add_Click(object sender, EventArgs e)
         {
-                       
-                addPinger(tb_ip.Text);
-             
-                    
+
+            string[] lines = tb_ip.Lines;
+
+            for (int i = 0; i <= lines.GetUpperBound(0); i++)
+            {
+             //   MessageBox.Show(lines[i]);
+                addPinger(lines[i]);
+            }                    
         }
      
         private void tb_ip_KeyDown(object sender, KeyEventArgs e)
@@ -65,13 +69,13 @@ namespace pinger
 
             if (!allreadyExists)
             {
-                string myIpString = tb_ip.Text;
+                string myIpString = address;
                 System.Net.IPAddress ipAddress = null;
                 bool isValidIp = System.Net.IPAddress.TryParse(myIpString, out ipAddress);
 
                 if (!isValidIp)
                 {
-                    MessageBox.Show("No valid IP Adress");
+                    MessageBox.Show("->" + myIpString + "<- No valid IP Adress");
                 }
                 else
                 {
