@@ -32,6 +32,7 @@ namespace pinger
                     | System.Windows.Forms.AnchorStyles.Right)));
 
             cb3d.Checked = true;
+                       
         }
            
         private void btn_add_Click(object sender, EventArgs e)
